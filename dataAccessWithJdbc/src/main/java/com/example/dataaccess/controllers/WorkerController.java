@@ -4,12 +4,13 @@ package com.example.dataaccess.controllers;
 import com.example.dataaccess.model.Worker;
 import com.example.dataaccess.repository.WorkerRepository;
 
-import java.sql.Date;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,7 +54,7 @@ public class WorkerController {
 	
 			
 	@PostMapping("/create")
-	//@ResponseStatus(HttpStatus.CREATED)	
+	@ResponseStatus(code=HttpStatus.CREATED)	
 	public boolean createWorker(@RequestBody Worker worker){
 		
 		int rowsAffected=0;
@@ -86,13 +86,20 @@ public class WorkerController {
 					
 	}
 	@DeleteMapping("/delete/{id}")
-	public void deleteWorker(@PathVariable int id){
+	public boolean deleteWorker(@PathVariable int id){
+		int rowsAffected=0;
 		try {
-			workerRepository.delete(id);
+			rowsAffected = this.workerRepository.delete(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if(rowsAffected == 1) {
+			return true;
+		}
+		return false;	
+
+		
 				
 	}
 }

@@ -46,13 +46,14 @@ public class WorkerRepository implements WorkerDAO {
 
     }
 
-    public void delete(int workerId)
+    public int delete(int workerId)
             throws SQLException {
         String query = String.format("DELETE FROM worker WHERE worker_id=%d", workerId);
         try (Statement statement = connection.createStatement()) {
             int k = statement.executeUpdate(query);
             System.out.println(k + " records deleted");
             log.info(k + " records deleted");
+            return k;
         }
 
         
