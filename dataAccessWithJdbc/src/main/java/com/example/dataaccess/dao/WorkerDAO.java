@@ -17,6 +17,6 @@ public interface WorkerDAO {
     public List<Worker> getWorkers()
             throws SQLException;
 
-    public void update(int worker_id)
+    public int update(int worker_id,String email)
             throws SQLException;
 }

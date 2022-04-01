@@ -9,9 +9,14 @@ import org.springframework.stereotype.Repository;
 import com.example.dataaccess.model.Worker;
 import com.example.dataaccess.util.DatabaseConnection;
 import com.example.dataaccess.dao.WorkerDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @Repository
 public class WorkerRepository implements WorkerDAO {
+	private static final Logger log = LoggerFactory.getLogger(WorkerRepository.class);
+
     private static Connection connection ;
 
     public WorkerRepository() {
@@ -19,10 +24,10 @@ public class WorkerRepository implements WorkerDAO {
 			connection = DatabaseConnection.getConnection();
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SQLException e) {
+			log.error(e.toString());	
+			} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+				log.error(e.toString());
 		}    }
 
     public int add(Worker worker)
@@ -47,6 +52,7 @@ public class WorkerRepository implements WorkerDAO {
         try (Statement statement = connection.createStatement()) {
             int k = statement.executeUpdate(query);
             System.out.println(k + " records deleted");
+            log.info(k + " records deleted");
         }
 
         
@@ -100,13 +106,15 @@ public class WorkerRepository implements WorkerDAO {
 
     }
 
-    public void update(int worker_id)
+    public int update(int worker_id,String email)
             throws SQLException {
 
-        String query = "Update worker Set email='mfs.akash@gmail.com' where worker_id=?";
+        String query = "Update worker Set email=? where worker_id=?";
         PreparedStatement ps = connection.prepareStatement(query);
-        ps.setInt(1, worker_id);
-        ps.executeUpdate();
+        ps.setString(1, email);
+
+        ps.setInt(2, worker_id);
+        return ps.executeUpdate();
         
 
     }

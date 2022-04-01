@@ -7,10 +7,18 @@ import com.example.dataaccess.repository.WorkerRepository;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -20,10 +28,12 @@ public class WorkerController {
 	@Autowired
 	private WorkerRepository workerRepository;
 	
-	@GetMapping("/showWorker")
-	public List<Worker> showWorker() {
+	@GetMapping("/worker/{id}")
+	public List<Worker> showWorker(@PathVariable int id) {
 		try {
-			return List.of(workerRepository.getWorker(5));
+			
+			return List.of(workerRepository.getWorker(id));
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -31,7 +41,7 @@ public class WorkerController {
 		return List.of();
 	}
 	
-	@GetMapping("/all/showWorkers")
+	@GetMapping("/all")
 	public List<Worker> showAllWorkers(){
 		try {
 			return workerRepository.getWorkers();
@@ -41,31 +51,44 @@ public class WorkerController {
 		}
 		return List.of();
 	}
-				
-	@GetMapping("/create")
-	public void createWorker(){
-		Worker w=new Worker(90,"kopi","Vishnu",700000,new Date(System.currentTimeMillis()),"HR","s.vishwakarma@my_org.in");
-				try {
-					workerRepository.add(w);
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-	}
-	@GetMapping("/update")
-	public void updateEmail(){
+	
+			
+	@PostMapping("/create")
+	//@ResponseStatus(HttpStatus.CREATED)	
+	public boolean createWorker(@RequestBody Worker worker){
+		
+		int rowsAffected=0;
 		try {
-			workerRepository.update(90);
+			rowsAffected = this.workerRepository.add(worker);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-				
-	}
-	@GetMapping("/delete")
-	public void deleteWorker(){
+		if(rowsAffected == 1) {
+			return true;
+		}
+		return false;	
+		}
+	@PatchMapping("/update/{id}")
+	public boolean updateEmail(@PathVariable int id,@RequestBody Map<String,String>requestBody ){
+		int rowsAffected=0;
 		try {
-			workerRepository.delete(90);
+			rowsAffected = this.workerRepository.update(id,requestBody.get("email"));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(rowsAffected == 1) {
+			return true;
+		}
+		return false;	
+
+					
+	}
+	@DeleteMapping("/delete/{id}")
+	public void deleteWorker(@PathVariable int id){
+		try {
+			workerRepository.delete(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
