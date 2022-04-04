@@ -30,7 +30,7 @@ public class WorkerRepository implements WorkerDAO {
 				log.error(e.toString());
 		}    }
 
-    public int add(Worker worker)
+    public int addWorker(Worker worker)
             throws SQLException {
         String query = "INSERT INTO Worker(WORKER_ID,FIRST_NAME,LAST_NAME,SALARY,JOINING_DATE,DEPARTMENT,email)VALUES(?,?,?,?,?,?,?)";
                
@@ -46,7 +46,7 @@ public class WorkerRepository implements WorkerDAO {
 
     }
 
-    public int delete(int workerId)
+    public int deleteById(int workerId)
             throws SQLException {
         String query = String.format("DELETE FROM worker WHERE worker_id=%d", workerId);
         try (Statement statement = connection.createStatement()) {
@@ -60,7 +60,7 @@ public class WorkerRepository implements WorkerDAO {
 
     }
 
-    public Worker getWorker(int workerId)
+    public Worker getWorkerById(int workerId)
             throws SQLException {
 
         String query = "SELECT * FROM worker WHERE worker_id=?";
@@ -107,7 +107,7 @@ public class WorkerRepository implements WorkerDAO {
 
     }
 
-    public int update(int worker_id,String email)
+    public int updateByEmail(int worker_id,String email)
             throws SQLException {
 
         String query = "Update worker Set email=? where worker_id=?";

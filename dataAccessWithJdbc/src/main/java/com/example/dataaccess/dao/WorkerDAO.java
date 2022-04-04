@@ -5,18 +5,18 @@ import java.util.List;
 import com.example.dataaccess.model.Worker;
 
 public interface WorkerDAO {
-    public int add(Worker worker)
+    public int addWorker(Worker worker)
             throws SQLException;
 
-    public int delete(int workerId)
+    public int deleteById(int workerId)
             throws SQLException;
 
-    public Worker getWorker(int workerId)
+    public Worker getWorkerById(int workerId)
             throws SQLException;
 
     public List<Worker> getWorkers()
             throws SQLException;
 
-    public int update(int worker_id,String email)
+    public int updateByEmail(int worker_id,String email)
             throws SQLException;
 }

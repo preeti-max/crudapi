@@ -18,7 +18,7 @@ public class WorkerService {
 	public List<Worker> showWorker(Integer id) {
 		try {
 			
-			return List.of(workerRepository.getWorker(id));
+			return List.of(workerRepository.getWorkerById(id));
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -44,7 +44,7 @@ public class WorkerService {
 		
 		int rowsAffected=0;
 		try {
-			rowsAffected = this.workerRepository.add(worker);
+			rowsAffected = this.workerRepository.addWorker(worker);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -58,7 +58,7 @@ public class WorkerService {
 	public boolean updateEmail(Integer id,String email ){
 		int rowsAffected=0;
 		try {
-			rowsAffected = this.workerRepository.update(id,email);
+			rowsAffected = this.workerRepository.updateByEmail(id,email);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,7 +74,7 @@ public class WorkerService {
 	public boolean deleteWorker(Integer id){
 		int rowsAffected=0;
 		try {
-			rowsAffected = this.workerRepository.delete(id);
+			rowsAffected = this.workerRepository.deleteById(id);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

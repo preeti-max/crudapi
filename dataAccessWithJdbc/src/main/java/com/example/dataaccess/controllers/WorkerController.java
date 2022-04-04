@@ -2,10 +2,10 @@ package com.example.dataaccess.controllers;
 
 
 import com.example.dataaccess.model.Worker;
-import com.example.dataaccess.repository.WorkerRepository;
+
 import com.example.dataaccess.service.WorkerService;
 
-import java.sql.SQLException;
+
 import java.util.List;
 import java.util.Map;
 
