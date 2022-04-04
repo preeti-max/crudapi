@@ -3,7 +3,7 @@ package com.example.dataaccess.controllers;
 
 import com.example.dataaccess.model.Worker;
 import com.example.dataaccess.repository.WorkerRepository;
-
+import com.example.dataaccess.service.WorkerService;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -26,30 +26,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/worker")
 public class WorkerController {
 	@Autowired
-	private WorkerRepository workerRepository;
+	private WorkerService workerService;
 	
 	@GetMapping("/worker/{id}")
 	public List<Worker> showWorker(@PathVariable int id) {
-		try {
-			
-			return List.of(workerRepository.getWorker(id));
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return List.of();
+		return workerService.showWorker(id);
 	}
 	
 	@GetMapping("/all")
 	public List<Worker> showAllWorkers(){
-		try {
-			return workerRepository.getWorkers();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return List.of();
+		return workerService.showAllWorkers();
 	}
 	
 			
@@ -57,48 +43,17 @@ public class WorkerController {
 	@ResponseStatus(code=HttpStatus.CREATED)	
 	public boolean createWorker(@RequestBody Worker worker){
 		
-		int rowsAffected=0;
-		try {
-			rowsAffected = this.workerRepository.add(worker);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		return workerService.createWorker(worker);
 		}
-		if(rowsAffected == 1) {
-			return true;
-		}
-		return false;	
-		}
+	
 	@PatchMapping("/update/{id}")
 	public boolean updateEmail(@PathVariable int id,@RequestBody Map<String,String>requestBody ){
-		int rowsAffected=0;
-		try {
-			rowsAffected = this.workerRepository.update(id,requestBody.get("email"));
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(rowsAffected == 1) {
-			return true;
-		}
-		return false;	
-
+		return workerService.updateEmail(id, requestBody.get("email"));
 					
 	}
 	@DeleteMapping("/delete/{id}")
 	public boolean deleteWorker(@PathVariable int id){
-		int rowsAffected=0;
-		try {
-			rowsAffected = this.workerRepository.delete(id);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(rowsAffected == 1) {
-			return true;
-		}
-		return false;	
-
+		return workerService.deleteWorker(id);
 		
 				
 	}
